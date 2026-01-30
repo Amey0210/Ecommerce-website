@@ -5,6 +5,7 @@ export const registerFormControls = [
     placeholder: "Enter your user name",
     componentType: "input",
     type: "text",
+    autocomplete: "username",
   },
   {
     name: "email",
@@ -12,6 +13,7 @@ export const registerFormControls = [
     placeholder: "Enter your email",
     componentType: "input",
     type: "email",
+    autocomplete: "email",
   },
   {
     name: "password",
@@ -19,6 +21,7 @@ export const registerFormControls = [
     placeholder: "Enter your password",
     componentType: "input",
     type: "password",
+    autocomplete: "new-password",
   },
 ];
 
@@ -29,6 +32,7 @@ export const loginFormControls = [
     placeholder: "Enter your email",
     componentType: "input",
     type: "email",
+    autocomplete: "email",
   },
   {
     name: "password",
@@ -36,6 +40,7 @@ export const loginFormControls = [
     placeholder: "Enter your password",
     componentType: "input",
     type: "password",
+    autocomplete: "current-password",
   },
 ];
 
@@ -193,6 +198,7 @@ export const addressFormControls = [
     componentType: "input",
     type: "text",
     placeholder: "Enter your address",
+    autocomplete: "street-address",
   },
   {
     label: "City",
@@ -200,6 +206,7 @@ export const addressFormControls = [
     componentType: "input",
     type: "text",
     placeholder: "Enter your city",
+    autocomplete: "address-level2",
   },
   {
     label: "Pincode",
@@ -207,6 +214,7 @@ export const addressFormControls = [
     componentType: "input",
     type: "text",
     placeholder: "Enter your pincode",
+    autocomplete: "postal-code",
   },
   {
     label: "Phone",
@@ -214,6 +222,7 @@ export const addressFormControls = [
     componentType: "input",
     type: "text",
     placeholder: "Enter your phone number",
+    autocomplete: "tel",
   },
   {
     label: "Notes",

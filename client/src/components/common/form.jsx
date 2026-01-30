@@ -1,14 +1,14 @@
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "../ui/select";
-import { Textarea } from "../ui/textarea";
-import { Button } from "../ui/button";
+import { 
+  Select, 
+  SelectContent, 
+  SelectItem, 
+  SelectTrigger, 
+  SelectValue 
+} from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
+import { Button } from "@/components/ui/button";
 
 function CommonForm({
   formControls,
@@ -28,8 +28,9 @@ function CommonForm({
           <Input
             name={getControlItem.name}
             placeholder={getControlItem.placeholder}
-            id={getControlItem.name}
+            id={getControlItem.name} // This must match the Label's htmlFor
             type={getControlItem.type}
+            autoComplete={getControlItem.autocomplete} // Pass autocomplete from config
             value={value}
             onChange={(event) =>
               setFormData({
@@ -39,8 +40,8 @@ function CommonForm({
             }
           />
         );
-
         break;
+
       case "select":
         element = (
           <Select
@@ -52,7 +53,7 @@ function CommonForm({
             }
             value={value}
           >
-            <SelectTrigger className="w-full">
+            <SelectTrigger id={getControlItem.name} className="w-full">
               <SelectValue placeholder={getControlItem.label} />
             </SelectTrigger>
             <SelectContent>
@@ -66,14 +67,14 @@ function CommonForm({
             </SelectContent>
           </Select>
         );
-
         break;
+
       case "textarea":
         element = (
           <Textarea
             name={getControlItem.name}
             placeholder={getControlItem.placeholder}
-            id={getControlItem.id}
+            id={getControlItem.name} // Fixed ID mapping
             value={value}
             onChange={(event) =>
               setFormData({
@@ -83,7 +84,6 @@ function CommonForm({
             }
           />
         );
-
         break;
 
       default:
@@ -93,6 +93,7 @@ function CommonForm({
             placeholder={getControlItem.placeholder}
             id={getControlItem.name}
             type={getControlItem.type}
+            autoComplete={getControlItem.autocomplete}
             value={value}
             onChange={(event) =>
               setFormData({
@@ -113,7 +114,10 @@ function CommonForm({
       <div className="flex flex-col gap-3">
         {formControls.map((controlItem) => (
           <div className="grid w-full gap-1.5" key={controlItem.name}>
-            <Label className="mb-1">{controlItem.label}</Label>
+            {/* Added htmlFor to link the label to the input ID */}
+            <Label htmlFor={controlItem.name} className="mb-1">
+              {controlItem.label}
+            </Label>
             {renderInputsByComponentType(controlItem)}
           </div>
         ))}
