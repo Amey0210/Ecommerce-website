@@ -5,7 +5,7 @@ const {
   fetchCartItems,
   deleteCartItem,
   updateCartItemQty,
-} = require("../../controllers/shop/cart-controller");
+} = require("../../controllers/shop/cartController");
 
 const router = express.Router();
 

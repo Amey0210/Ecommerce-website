@@ -1,25 +1,26 @@
+require('dotenv').config();
 const express = require("express");
 const mongoose = require("mongoose");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
-const authRouter = require("./routes/auth/auth-routes");
-const adminProductsRouter = require("./routes/admin/products-routes");
-const adminOrderRouter = require("./routes/admin/order-routes");
+const authRouter = require("./routes/auth/authRoutes");
+const adminProductsRouter = require("./routes/admin/productsRoutes");
+const adminOrderRouter = require("./routes/admin/orderRoutes");
 
-const shopProductsRouter = require("./routes/shop/products-routes");
-const shopCartRouter = require("./routes/shop/cart-routes");
-const shopAddressRouter = require("./routes/shop/address-routes");
-const shopOrderRouter = require("./routes/shop/order-routes");
-const shopSearchRouter = require("./routes/shop/search-routes");
-const shopReviewRouter = require("./routes/shop/review-routes");
+const shopProductsRouter = require("./routes/shop/productsRoutes");
+const shopCartRouter = require("./routes/shop/cartRoutes");
+const shopAddressRouter = require("./routes/shop/addressRoutes");
+const shopOrderRouter = require("./routes/shop/orderRoutes");
+const shopSearchRouter = require("./routes/shop/searchRoutes");
+const shopReviewRouter = require("./routes/shop/reviewRoutes");
 
-const commonFeatureRouter = require("./routes/common/feature-routes");
+const commonFeatureRouter = require("./routes/common/featureRoutes");
 
 //create a database connection
 //create a separate file for this and then import/use that file here
 
 mongoose
-  .connect("db_url")
+  .connect(process.env.MONGODB_URL) // It reads the URL from the .env now!
   .then(() => console.log("MongoDB connected"))
   .catch((error) => console.log(error));
 

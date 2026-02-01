@@ -3,7 +3,7 @@ const express = require("express");
 const {
   addProductReview,
   getProductReviews,
-} = require("../../controllers/shop/product-review-controller");
+} = require("../../controllers/shop/productReviewController");
 
 const router = express.Router();
 

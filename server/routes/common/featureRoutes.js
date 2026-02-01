@@ -3,7 +3,7 @@ const express = require("express");
 const {
   addFeatureImage,
   getFeatureImages,
-} = require("../../controllers/common/feature-controller");
+} = require("../../controllers/common/featureController");
 
 const router = express.Router();
 
