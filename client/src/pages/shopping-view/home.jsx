@@ -31,7 +31,6 @@ import { useToast } from "@/hooks/use-toast";
 import ProductDetailsDialog from "@/components/shopping-view/product-details";
 import { getFeatureImages } from "@/store/common-slice";
 
-// Static data for categories
 const categoriesWithIcon = [
   { id: "men", label: "Men", icon: ShirtIcon },
   { id: "women", label: "Women", icon: CloudLightning },
@@ -40,7 +39,6 @@ const categoriesWithIcon = [
   { id: "footwear", label: "Footwear", icon: UmbrellaIcon },
 ];
 
-// Static data for brands
 const brandsWithIcon = [
   { id: "nike", label: "Nike", icon: Shirt },
   { id: "adidas", label: "Adidas", icon: WashingMachine },
@@ -50,50 +48,18 @@ const brandsWithIcon = [
   { id: "h&m", label: "H&M", icon: Heater },
 ];
 
-// MOCK PRODUCTS for UI Demo
-const mockProducts = [
-  {
-    id: "1",
-    image: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=80&w=500",
-    title: "Classic White Tee",
-    category: "men",
-    brand: "nike",
-    price: 1299,
-    salePrice: 999,
-  },
-  {
-    id: "2",
-    image: "https://images.unsplash.com/photo-1525507119028-ed4c629a60a3?q=80&w=500",
-    title: "Denim Jacket",
-    category: "women",
-    brand: "levi",
-    price: 4500,
-    salePrice: 3200,
-  },
-  {
-    id: "3",
-    image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=500",
-    title: "Red Running Shoes",
-    category: "footwear",
-    brand: "puma",
-    price: 5999,
-    salePrice: 4500,
-  },
-  {
-    id: "4",
-    image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=500",
-    title: "Smart Watch Elite",
-    category: "accessories",
-    brand: "zara",
-    price: 8999,
-    salePrice: 7500,
-  }
-];
-
 function ShoppingHome() {
+  // 1. Local slides array using your imported assets
   const slides = [bannerOne, bannerTwo, bannerThree];
+
   const [currentSlide, setCurrentSlide] = useState(0);
-  const { productList, productDetails } = useSelector((state) => state.shopProducts);
+  const { productList, productDetails } = useSelector(
+    (state) => state.shopProducts
+  );
+  
+  // We'll keep this for when the backend is ready
+  const { featureImageList } = useSelector((state) => state.commonFeature);
+
   const [openDetailsDialog, setOpenDetailsDialog] = useState(false);
   const { user } = useSelector((state) => state.auth);
 
@@ -103,7 +69,10 @@ function ShoppingHome() {
 
   function handleNavigateToListingPage(getCurrentItem, section) {
     sessionStorage.removeItem("filters");
-    const currentFilter = { [section]: [getCurrentItem.id] };
+    const currentFilter = {
+      [section]: [getCurrentItem.id],
+    };
+
     sessionStorage.setItem("filters", JSON.stringify(currentFilter));
     navigate(`/shop/listing`);
   }
@@ -122,7 +91,9 @@ function ShoppingHome() {
     ).then((data) => {
       if (data?.payload?.success) {
         dispatch(fetchCartItems(user?.id));
-        toast({ title: "Product added to cart" });
+        toast({
+          title: "Product is added to cart",
+        });
       }
     });
   }
@@ -131,22 +102,32 @@ function ShoppingHome() {
     if (productDetails !== null) setOpenDetailsDialog(true);
   }, [productDetails]);
 
+  // 2. Updated Timer to use local slides
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentSlide((prevSlide) => (prevSlide + 1) % slides.length);
-    }, 5000);
+    }, 5000); // 5 seconds is better for viewing
+
     return () => clearInterval(timer);
   }, [slides.length]);
 
   useEffect(() => {
-    dispatch(fetchAllFilteredProducts({ filterParams: {}, sortParams: "price-lowtohigh" }));
+    dispatch(
+      fetchAllFilteredProducts({
+        filterParams: {},
+        sortParams: "price-lowtohigh",
+      })
+    );
+  }, [dispatch]);
+
+  useEffect(() => {
     dispatch(getFeatureImages());
   }, [dispatch]);
 
   return (
     <div className="flex flex-col min-h-screen">
-      {/* Banner Section */}
       <div className="relative w-full h-[600px] overflow-hidden">
+        {/* 3. Rendering from the local slides array */}
         {slides.map((slide, index) => (
           <img
             src={slide}
@@ -159,7 +140,12 @@ function ShoppingHome() {
         <Button
           variant="outline"
           size="icon"
-          onClick={() => setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length)}
+          onClick={() =>
+            setCurrentSlide(
+              (prevSlide) =>
+                (prevSlide - 1 + slides.length) % slides.length
+            )
+          }
           className="absolute top-1/2 left-4 transform -translate-y-1/2 bg-white/80"
         >
           <ChevronLeftIcon className="w-4 h-4" />
@@ -167,27 +153,34 @@ function ShoppingHome() {
         <Button
           variant="outline"
           size="icon"
-          onClick={() => setCurrentSlide((prev) => (prev + 1) % slides.length)}
+          onClick={() =>
+            setCurrentSlide(
+              (prevSlide) => (prevSlide + 1) % slides.length
+            )
+          }
           className="absolute top-1/2 right-4 transform -translate-y-1/2 bg-white/80"
         >
           <ChevronRightIcon className="w-4 h-4" />
         </Button>
       </div>
 
-      {/* Categories Section */}
       <section className="py-12 bg-gray-50">
         <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center mb-8">Shop by category</h2>
+          <h2 className="text-3xl font-bold text-center mb-8">
+            Shop by category
+          </h2>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-            {categoriesWithIcon.map((item) => (
+            {categoriesWithIcon.map((categoryItem) => (
               <Card
-                key={item.id}
-                onClick={() => handleNavigateToListingPage(item, "category")}
+                key={categoryItem.id}
+                onClick={() =>
+                  handleNavigateToListingPage(categoryItem, "category")
+                }
                 className="cursor-pointer hover:shadow-lg transition-shadow"
               >
                 <CardContent className="flex flex-col items-center justify-center p-6">
-                  <item.icon className="w-12 h-12 mb-4 text-primary" />
-                  <span className="font-bold">{item.label}</span>
+                  <categoryItem.icon className="w-12 h-12 mb-4 text-primary" />
+                  <span className="font-bold">{categoryItem.label}</span>
                 </CardContent>
               </Card>
             ))}
@@ -195,20 +188,19 @@ function ShoppingHome() {
         </div>
       </section>
 
-      {/* Brands Section */}
       <section className="py-12 bg-gray-50">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold text-center mb-8">Shop by Brand</h2>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-            {brandsWithIcon.map((item) => (
+            {brandsWithIcon.map((brandItem) => (
               <Card
-                key={item.id}
-                onClick={() => handleNavigateToListingPage(item, "brand")}
+                key={brandItem.id}
+                onClick={() => handleNavigateToListingPage(brandItem, "brand")}
                 className="cursor-pointer hover:shadow-lg transition-shadow"
               >
                 <CardContent className="flex flex-col items-center justify-center p-6">
-                  <item.icon className="w-12 h-12 mb-4 text-primary" />
-                  <span className="font-bold">{item.label}</span>
+                  <brandItem.icon className="w-12 h-12 mb-4 text-primary" />
+                  <span className="font-bold">{brandItem.label}</span>
                 </CardContent>
               </Card>
             ))}
@@ -216,24 +208,25 @@ function ShoppingHome() {
         </div>
       </section>
 
-      {/* Featured Products Section */}
       <section className="py-12">
         <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center mb-8">Feature Products</h2>
+          <h2 className="text-3xl font-bold text-center mb-8">
+            Feature Products
+          </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {/* Using mockProducts if productList is empty */}
-            {(productList && productList.length > 0 ? productList : mockProducts).map((productItem) => (
-              <ShoppingProductTile
-                key={productItem.id}
-                handleGetProductDetails={handleGetProductDetails}
-                product={productItem}
-                handleAddtoCart={handleAddtoCart}
-              />
-            ))}
+            {productList && productList.length > 0
+              ? productList.map((productItem) => (
+                  <ShoppingProductTile
+                    key={productItem.id}
+                    handleGetProductDetails={handleGetProductDetails}
+                    product={productItem}
+                    handleAddtoCart={handleAddtoCart}
+                  />
+                ))
+              : null}
           </div>
         </div>
       </section>
-
       <ProductDetailsDialog
         open={openDetailsDialog}
         setOpen={setOpenDetailsDialog}
