@@ -1,6 +1,6 @@
 const Order = require("../../models/order");
 const Product = require("../../models/Product");
-const ProductReview = require("../../models/Review"); 
+const ProductReview = require("../../models/ProductReview");
 
 const addProductReview = async (req, res) => {
   try {
