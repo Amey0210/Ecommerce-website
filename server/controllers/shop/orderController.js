@@ -1,5 +1,5 @@
 const paypal = require("../../helpers/paypal");
-const Order = require("../../models/Order");
+const Order = require("../../models/order");
 const Cart = require("../../models/Cart");
 const Product = require("../../models/Product");
 
