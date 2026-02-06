@@ -50,13 +50,13 @@ A high-performance, responsive e-commerce platform built with the MERN stack. Th
    git clone [https://github.com/Amey0210/rabbit-store.git](https://github.com/Amey0210/rabbit-store.git)
    cd rabbit-store
 
-2. Backend Setup
-
-cd server
-npm install
-# Create a .env file and add the following:
-# MONGO_URI, JWT_SECRET, CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET
-npm start
+2. **Backend Setup**
+  ```bash
+  cd server
+  npm install
+### Create a .env file and add the following:
+  MONGO_URI, JWT_SECRET, CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET
+  npm start
 
 3. Frontend Setup
 
